@@ -28,6 +28,7 @@ static NSString *datastorePath = nil;
         if (coreDataInstance == nil)
         {
             coreDataInstance = [[self alloc] init];
+            self.loggingEnabled = NO;
         }
     }
     return coreDataInstance;
@@ -100,7 +101,10 @@ static NSString *datastorePath = nil;
         
         if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error])
         {
-            DLog(@"Unresolved PersistentStoreCoordinator error %@, %@", error, [error userInfo]);
+            if (_loggingEnabled)
+            {
+                NSLog(@"Unresolved PersistentStoreCoordinator error %@, %@", error, [error userInfo]);
+            }
             abort();
         }
         return _persistentStoreCoordinator;
@@ -117,7 +121,10 @@ static NSString *datastorePath = nil;
     {
         if ([[[CoreDataHelper sharedManager] managedObjectContext] hasChanges] && ![[[CoreDataHelper sharedManager] managedObjectContext] save:&error])
         {
-            DLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            if (_loggingEnabled)
+            {
+                NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            }
             abort();
         }
     }
@@ -217,7 +224,10 @@ static NSString *datastorePath = nil;
     
     if (!(matches = [[[CoreDataHelper sharedManager] managedObjectContext] executeFetchRequest:fetchRequest error:&error]))
     {
-        DLog(@"Core Data Fetch Request Failed: %@, %@", error, [error userInfo]);
+        if (_loggingEnabled)
+        {
+            NSLog(@"Core Data Fetch Request Failed: %@, %@", error, [error userInfo]);
+        }
     }
     
     return matches;
@@ -247,7 +257,10 @@ static NSString *datastorePath = nil;
 
     if (!(matches = [[[CoreDataHelper sharedManager] managedObjectContext] executeFetchRequest:fetchRequest error:&error]))
     {
-        DLog(@"Core Data Fetch Request Failed: %@, %@", error, [error userInfo]);
+        if (_loggingEnabled)
+        {
+            NSLog(@"Core Data Fetch Request Failed: %@, %@", error, [error userInfo]);
+        }
     }
     
     if (matches.count)
@@ -301,7 +314,10 @@ static NSString *datastorePath = nil;
     
     if (count == NSNotFound)
     {
-        DLog(@"Core Data Count Fetch Request Failed: %@, %@", error, [error userInfo]);
+        if (_loggingEnabled)
+        {
+            NSLog(@"Core Data Count Fetch Request Failed: %@, %@", error, [error userInfo]);
+        }
     }
     
     return count;
