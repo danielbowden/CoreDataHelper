@@ -21,14 +21,14 @@ static NSString *datastorePath = nil;
     {
         if (datastorePath == nil)
         {
-            DLog(@"No DatastorePath has been set for CoreDataHelper");
+            NSLog(@"No DatastorePath has been set for CoreDataHelper");
             abort();
         }
         
         if (coreDataInstance == nil)
         {
             coreDataInstance = [[self alloc] init];
-            self.loggingEnabled = NO;
+            coreDataInstance.loggingEnabled = NO;
         }
     }
     return coreDataInstance;
@@ -121,7 +121,7 @@ static NSString *datastorePath = nil;
     {
         if ([[[CoreDataHelper sharedManager] managedObjectContext] hasChanges] && ![[[CoreDataHelper sharedManager] managedObjectContext] save:&error])
         {
-            if (_loggingEnabled)
+            if ([[CoreDataHelper sharedManager] loggingEnabled])
             {
                 NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
             }
@@ -224,7 +224,7 @@ static NSString *datastorePath = nil;
     
     if (!(matches = [[[CoreDataHelper sharedManager] managedObjectContext] executeFetchRequest:fetchRequest error:&error]))
     {
-        if (_loggingEnabled)
+        if ([[CoreDataHelper sharedManager] loggingEnabled])
         {
             NSLog(@"Core Data Fetch Request Failed: %@, %@", error, [error userInfo]);
         }
@@ -257,7 +257,7 @@ static NSString *datastorePath = nil;
 
     if (!(matches = [[[CoreDataHelper sharedManager] managedObjectContext] executeFetchRequest:fetchRequest error:&error]))
     {
-        if (_loggingEnabled)
+        if ([[CoreDataHelper sharedManager] loggingEnabled])
         {
             NSLog(@"Core Data Fetch Request Failed: %@, %@", error, [error userInfo]);
         }
@@ -314,7 +314,7 @@ static NSString *datastorePath = nil;
     
     if (count == NSNotFound)
     {
-        if (_loggingEnabled)
+        if ([[CoreDataHelper sharedManager] loggingEnabled])
         {
             NSLog(@"Core Data Count Fetch Request Failed: %@, %@", error, [error userInfo]);
         }
