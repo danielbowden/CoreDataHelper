@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "CoreDataHelper"
-  s.version          = "0.1.0"
+  s.version          = "0.1.1"
   s.summary          = "A series of helper methods for managing your core data context as well as selecting, inserting, deleting, and sorting"
   s.license          = 'MIT'
   s.author           = { "Daniel Bowden" => "github@bowden.in" }
