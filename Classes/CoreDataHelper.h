@@ -68,9 +68,11 @@
 //COUNTS
 
 + (NSUInteger)countForObjectsNamed:(NSString *)name
-                         predicate:(NSPredicate *)predicate;
+                         predicate:(NSPredicate *)predicate
+                includeSubentities:(BOOL)includeSubentities;
 
-+ (NSUInteger)countForObjectsNamed:(NSString *)name;
++ (NSUInteger)countForObjectsNamed:(NSString *)name
+                includeSubentities:(BOOL)includeSubentities;
 
 
 //FETCHED RESULTS CONTROLLERS

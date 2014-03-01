@@ -290,19 +290,19 @@ static NSString *datastorePath = nil;
 
 #pragma mark - COUNTS
 
-+ (NSUInteger)countForObjectsNamed:(NSString *)name
++ (NSUInteger)countForObjectsNamed:(NSString *)name includeSubentities:(BOOL)includeSubentities
 {
-    return [CoreDataHelper countForObjectsNamed:name predicate:nil];
+    return [CoreDataHelper countForObjectsNamed:name predicate:nil includeSubentities:includeSubentities];
 }
 
-+ (NSUInteger)countForObjectsNamed:(NSString *)name predicate:(NSPredicate *)predicate
++ (NSUInteger)countForObjectsNamed:(NSString *)name predicate:(NSPredicate *)predicate includeSubentities:(BOOL)includeSubentities
 {
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     
     NSEntityDescription *entity = [NSEntityDescription entityForName:name inManagedObjectContext:[[CoreDataHelper sharedManager] managedObjectContext]];
     
     [fetchRequest setEntity:entity];
-    [fetchRequest setIncludesSubentities:NO];
+    [fetchRequest setIncludesSubentities:includeSubentities];
     
     if (predicate)
     {
