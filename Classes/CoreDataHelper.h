@@ -65,6 +65,9 @@
                                orderBy:(NSString *)order
                              ascending:(BOOL)asc;
 
++ (NSArray *)selectIdsOfObjectsNamed:(NSString *)name
+                           predicate:(NSPredicate *)predicate;
+
 //COUNTS
 
 + (NSUInteger)countForObjectsNamed:(NSString *)name

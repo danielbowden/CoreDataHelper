@@ -160,7 +160,7 @@ static NSString *datastorePath = nil;
 
 + (void)deleteObjectsNamed:(NSString *)name predicate:(NSPredicate *)predicate
 {
-    NSArray *matches = [CoreDataHelper selectObjectsNamed:name predicate:predicate];
+    NSArray *matches = [CoreDataHelper selectIdsOfObjectsNamed:name predicate:predicate];
     
     for (id obj in matches)
     {
@@ -286,6 +286,35 @@ static NSString *datastorePath = nil;
 + (NSManagedObject *)selectObjectNamed:(NSString *)name orderBy:(NSString *)order ascending:(BOOL)asc
 {
     return [CoreDataHelper selectObjectNamed:name predicate:nil orderBy:order ascending:asc];
+}
+
++ (NSArray *)selectIdsOfObjectsNamed:(NSString *)name predicate:(NSPredicate *)predicate
+{
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:name inManagedObjectContext:[[CoreDataHelper sharedManager] managedObjectContext]];
+    [fetchRequest setEntity:entity];
+    
+    if (predicate)
+    {
+        [fetchRequest setPredicate:predicate];
+    }
+    
+    [fetchRequest setFetchLimit:0];
+    [fetchRequest setIncludesPropertyValues:NO]; //only fetch managedObjectID to avoid loading all data
+    [fetchRequest setIncludesSubentities:YES];
+    
+    NSError *error;
+    NSArray *matches;
+    
+    if (!(matches = [[[CoreDataHelper sharedManager] managedObjectContext] executeFetchRequest:fetchRequest error:&error]))
+    {
+        if ([[CoreDataHelper sharedManager] loggingEnabled])
+        {
+            NSLog(@"Core Data Fetch Request Failed: %@, %@", error, [error userInfo]);
+        }
+    }
+    
+    return matches;
 }
 
 #pragma mark - COUNTS
